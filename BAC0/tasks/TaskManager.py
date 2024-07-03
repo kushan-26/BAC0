@@ -74,8 +74,9 @@ class Manager:
                     )
                 else:
                     cls._log.error(
-                        "Super Mega Giga big error {}. Removing task.".format(error)
+                        "Super Mega Giga big error {}. Removing task ({}) {}.".format(error, task, error.__dict__)
                     )
+                    raise error
                     cls.tasks.remove(task.id)
             else:
                 if not cls.manager.is_alive() and cls.enable:

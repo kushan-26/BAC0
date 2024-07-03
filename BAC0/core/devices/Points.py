@@ -722,7 +722,7 @@ class NumericPoint(Point):
         try:
             polling = self.properties.device.properties.pollDelay
             if (polling < 90 and polling > 0) or self.cov_registered:
-                val = float(self.lastValue)
+                val = float(self.lastValue) if self.lastValue is not None else "NaN"
             else:
                 val = float(self.value)
         except ValueError:
@@ -738,12 +738,19 @@ class NumericPoint(Point):
                 self.properties.units_state,
             )
 
-        return "{}/{} : {:.2f} {}".format(
-            self.properties.device.properties.name,
-            self.properties.name,
-            val,
-            self.properties.units_state,
-        )
+        if  isinstance(val, float):
+            return "{}/{} : {:.2f} {}".format(
+                self.properties.device.properties.name,
+                self.properties.name,
+                val,
+                self.properties.units_state,
+            )
+        else:
+            return "{}/{} : (n/a) {}".format(
+                self.properties.device.properties.name,
+                self.properties.name,
+                self.properties.units_state,
+            )
 
     def __add__(self, other):
         return self.value + other

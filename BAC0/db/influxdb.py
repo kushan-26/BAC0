@@ -74,7 +74,10 @@ class InfluxDB:
 
     def clean_value(self, object_type, val, units_state):
         if "analog" in object_type:
-            _string_value = "{:.3f} {}".format(val, units_state)
+            if isinstance(val, float):
+                _string_value = "{:.3f} {}".format(val, units_state)
+            else:
+                _string_value = str(val)
             _value = val
         elif "multi" in object_type:
             _string_value = "{}".format(val.split(":")[1])
@@ -94,6 +97,8 @@ class InfluxDB:
         _points = []
 
         for point in list_of_points:
+            if point.lastTimestamp is None:
+                continue
             _object_name = point.properties.name
             _devicename = point.properties.device.properties.name
             _device_id = point.properties.device.properties.device_id
