@@ -204,7 +204,7 @@ class Point:
         To retrieve something general, forcing vendor id 0
         """
         try:
-            res = await self.properties.device.properties.network.readMultiple(
+            res = await self.properties.device.properties.network.(
                 "{} {} {} all".format(
                     self.properties.device.properties.address,
                     self.properties.type,
